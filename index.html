@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALCONBURY TECH | AI & SOFTWARE DEVELOPMENT</title>
+    <meta name="description" content="Alconbury Tech is a Cambridge-based AI and software development company. We design AI-powered products, automation systems, and software applications.">
+
+    <meta property="og:title" content="Alconbury Tech | AI & Software Development">
+    <meta property="og:description" content="Cambridge-based AI and software development company. We design AI-powered products, automation systems, and software applications.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alconburytech.com">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Alconbury Tech | AI & Software Development">
+    <meta name="twitter:description" content="Cambridge-based AI and software development company specialising in AI consulting, automation, and bespoke software.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%23020202'/><text x='50' y='68' font-family='system-ui' font-size='52' font-weight='600' fill='%23F4F4F5' text-anchor='middle'>AT</text></svg>">
+    <link rel="canonical" href="https://alconburytech.com">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@100;300;400&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #020202;
+            --fg: #F4F4F5;
+            --muted: #444446;
+            --border: #1a1a1c;
+            --accent: #a3a3a3;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --space-xs: 4px;
+            --space-sm: 12px;
+            --space-md: 24px;
+            --space-lg: 48px;
+            --space-xl: 96px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; cursor: crosshair; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            font-family: var(--font-sans);
+            font-weight: 300;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+
+        .t-hero {
+            font-size: clamp(2.8rem, 5.5vw, 7rem);
+            line-height: 0.85;
+            letter-spacing: -0.06em;
+            text-transform: uppercase;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .t-hero-sub {
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .t-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+        }
+
+        .t-body {
+            font-size: 13px;
+            color: var(--accent);
+            max-width: 480px;
+            line-height: 1.8;
+        }
+
+        .t-data {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--fg);
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: var(--space-md);
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            z-index: 100;
+            mix-blend-mode: difference;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--fg);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: var(--font-mono);
+        }
+
+        /* CANVAS */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 35vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* HERO */
+        #landing {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1.6fr 0.4fr;
+            align-items: center;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+            border-left: 1px solid var(--border);
+            padding-left: var(--space-md);
+        }
+
+        a { cursor: pointer; }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--fg);
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            text-transform: uppercase;
+            width: fit-content;
+            cursor: pointer;
+            transition: border-color 0.3s, color 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* DATA STRIP */
+        .data-strip {
+            display: flex;
+            gap: var(--space-xl);
+            padding-bottom: 2px;
+            border-bottom: 1px solid var(--border);
+            width: 100%;
+            margin-bottom: var(--space-xs);
+        }
+
+        /* SERVICES */
+        #services {
+            padding: var(--space-xl) 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+        }
+
+        .service-card {
+            background: var(--bg);
+            padding: var(--space-md);
+            transition: background 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .service-card:hover { background: #050505; }
+
+        .service-card h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--fg);
+            letter-spacing: 0.01em;
+        }
+
+        .service-card p {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.75;
+        }
+
+        /* ABOUT */
+        #about {
+            padding: var(--space-xl) 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xl);
+            align-items: start;
+        }
+
+        .about-left h2 {
+            font-size: clamp(2rem, 3.5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+        }
+
+        .about-left p, .about-right p {
+            font-size: 13px;
+            color: var(--accent);
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .reg-block {
+            margin-top: var(--space-md);
+            border-top: 1px solid var(--border);
+            padding-top: var(--space-md);
+        }
+
+        .reg-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reg-row:last-child { border-bottom: none; }
+
+        .reg-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .reg-value {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--accent);
+        }
+
+        a.reg-value {
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        a.reg-value:hover { color: var(--fg); }
+
+        /* CONTACT */
+        #contact {
+            padding: var(--space-xl) 0 120px;
+            border-top: 1px solid var(--border);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1px;
+            background: var(--border);
+            max-width: 600px;
+            margin-top: var(--space-md);
+        }
+
+        .contact-card {
+            background: var(--bg);
+            padding: var(--space-md);
+            transition: background 0.3s;
+        }
+
+        .contact-card:hover { background: #050505; }
+
+        .contact-type {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .contact-value {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--fg);
+            text-decoration: none;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        a.contact-value:hover { color: var(--accent); }
+
+        /* STATUS BAR */
+        .status-bar {
+            position: fixed;
+            bottom: var(--space-md);
+            left: var(--space-md);
+            right: var(--space-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            #landing { grid-template-columns: 1fr; }
+            #canvas-container { width: 100vw; opacity: 0.3; }
+            .service-grid { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <nav>
+        <div class="t-data">AT_SYS_v1.0</div>
+        <div class="nav-links">
+            <a href="#landing" class="nav-link">01_ROOT</a>
+            <a href="#services" class="nav-link">02_SERVICES</a>
+            <a href="#about" class="nav-link">03_ABOUT</a>
+            <a href="#contact" class="nav-link">04_CONTACT</a>
+        </div>
+        <div class="t-data" id="clock" style="text-align: right;">00:00:00</div>
+    </nav>
+
+    <div class="container">
+
+        <!-- HERO -->
+        <section id="landing">
+            <div class="hero-content">
+                <span class="t-hero-sub">Artificial Intelligence &amp; Software Development</span>
+                <h1 class="t-hero">ALCONBURY</h1>
+                <h1 class="t-hero">TECH</h1>
+                <p class="t-body" style="margin-top: var(--space-md);">
+                    We design and develop AI-powered products, automation systems, and software applications for organisations that require precision, performance, and long-term reliability.
+                </p>
+                <div style="display: flex; gap: var(--space-sm); margin-top: var(--space-md);">
+                    <a href="#services" class="btn-outline">View Services</a>
+                    <a href="mailto:contact@alconburytech.com?subject=Enquiry" class="btn-outline">Get in Touch</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES -->
+        <section id="services">
+            <div class="section-header">
+                <span class="t-label">Services</span>
+                <div style="display: flex; gap: var(--space-lg);">
+                    <span class="t-label">CAPABILITIES: 12</span>
+                    <span class="t-label">STATUS: ACTIVE</span>
+                </div>
+            </div>
+
+            <div class="service-grid">
+                <div class="service-card">
+                    <span class="t-label">01</span>
+                    <h3>AI Consulting</h3>
+                    <p>Strategic guidance on AI adoption, architecture, and vendor selection. We assess where AI creates measurable value and advise accordingly.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">02</span>
+                    <h3>AI Automation</h3>
+                    <p>End-to-end workflow automation with AI embedded at critical decision points. Document processing, classification, routing, and business logic.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">03</span>
+                    <h3>LLM Development</h3>
+                    <p>Custom applications built on large language models. Prompt engineering, retrieval-augmented generation, fine-tuning, and context management.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">04</span>
+                    <h3>AI Agents</h3>
+                    <p>Autonomous agents designed to plan, reason, and execute multi-step tasks without manual intervention. Built on proven agentic frameworks.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">05</span>
+                    <h3>Conversational AI</h3>
+                    <p>Context-aware chatbot systems deployed across web, messaging platforms, and enterprise tooling. Designed for accuracy and resolution.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">06</span>
+                    <h3>Voice Agents</h3>
+                    <p>AI-driven voice systems for inbound and outbound telephony. Real-time assistants, IVR modernisation, and voice-first product development.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">07</span>
+                    <h3>Web Application Development</h3>
+                    <p>Full-stack web applications built with modern frameworks. Scalable architecture, clean interfaces, and production-grade engineering.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">08</span>
+                    <h3>Mobile Application Development</h3>
+                    <p>Cross-platform mobile applications developed with React Native. Native performance, maintainable codebase, and thoughtful user experience.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">09</span>
+                    <h3>RAG &amp; Knowledge Systems</h3>
+                    <p>Retrieval-augmented generation pipelines connecting language models to proprietary data. Vector databases, embeddings, and semantic search.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">10</span>
+                    <h3>AI Product Development</h3>
+                    <p>Full-cycle development of AI-native software products. From initial discovery through to deployment and iteration.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">11</span>
+                    <h3>Process Intelligence</h3>
+                    <p>Analysis and enhancement of existing business processes through targeted AI integration. Triage, extraction, prioritisation, and decision support.</p>
+                </div>
+                <div class="service-card">
+                    <span class="t-label">12</span>
+                    <h3>AI Integration &amp; API Development</h3>
+                    <p>Connecting AI capabilities to existing infrastructure. Middleware design, API development, and system integration architecture.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <div class="section-header">
+                <span class="t-label">About</span>
+                <span class="t-label">ENG_REG_17031730</span>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-left">
+                    <h2>A focused practice in AI and software engineering.</h2>
+                    <p>Alconbury Tech is a Cambridge-based technology company specialising in artificial intelligence and software development. We work with organisations seeking to integrate AI meaningfully into their products and operations.</p>
+                    <p>Our approach is direct and outcomes-oriented. Engagements are led by senior practitioners with hands-on experience in building and shipping AI-powered software.</p>
+
+                    <div class="reg-block">
+                        <div class="reg-row">
+                            <span class="reg-label">Registered name</span>
+                            <span class="reg-value">Alconbury Tech Ltd</span>
+                        </div>
+                        <div class="reg-row">
+                            <span class="reg-label">Companies House</span>
+                            <a href="https://find-and-update.company-information.service.gov.uk/company/17031730" target="_blank" rel="noopener" class="reg-value">No. 17031730</a>
+                        </div>
+                        <div class="reg-row">
+                            <span class="reg-label">Jurisdiction</span>
+                            <span class="reg-value">England &amp; Wales</span>
+                        </div>
+                        <div class="reg-row">
+                            <span class="reg-label">Type</span>
+                            <span class="reg-value">Private Limited Company</span>
+                        </div>
+                        <div class="reg-row">
+                            <span class="reg-label">Office</span>
+                            <span class="reg-value">Cambridge, England</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-right">
+                    <p>We operate as a compact, senior-led team. This structure allows us to maintain quality and consistency across every engagement without the overhead of a larger organisation.</p>
+                    <p>Our work spans the full development lifecycle, from initial feasibility and architecture through to deployment, documentation, and ongoing support.</p>
+                    <p>We have experience across AI consulting, automation, bespoke software development, and the commercial development of our own AI products. This background informs how we approach client work.</p>
+                    <p>Enquiries are welcome from organisations at any stage, whether exploring AI strategy or seeking a development partner for a defined project.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="section-header">
+                <span class="t-label">Contact</span>
+                <span class="t-label">CAMBRIDGE_GB</span>
+            </div>
+
+            <p class="t-body" style="margin-bottom: var(--space-md);">Enquiries may be directed to the address below. We aim to respond within one business day.</p>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-type">Email</div>
+                    <a href="mailto:contact@alconburytech.com" class="contact-value">contact@alconburytech.com</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-type">Location</div>
+                    <span class="contact-value">Cambridge, England</span>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-type">Companies House</div>
+                    <a href="https://find-and-update.company-information.service.gov.uk/company/17031730" target="_blank" rel="noopener" class="contact-value">No. 17031730</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-type">Enquire</div>
+                    <a href="mailto:contact@alconburytech.com?subject=Enquiry" class="contact-value">Start a conversation</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+        <div style="display: flex; flex-direction: column; gap: 4px; pointer-events: auto;">
+            <a href="#landing" class="t-label" style="color: var(--fg); text-decoration: none; cursor: pointer;">AT_SYS_2026</a>
+            <span class="t-data" style="font-size: 9px; color: var(--muted);">ALCONBURY_TECH_LTD</span>
+        </div>
+        <div class="t-label" style="pointer-events: auto;">© 2026 ALCONBURY TECH LTD · <a href="https://find-and-update.company-information.service.gov.uk/company/17031730" target="_blank" rel="noopener" style="color: inherit; text-decoration: none; cursor: pointer;">NO. 17031730</a></div>
+    </div>
+
+    <script>
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-GB', { hour12: false });
+        }, 1000);
+
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, (window.innerWidth * 0.35) / window.innerHeight, 0.1, 100);
+        camera.position.z = 4;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth * 0.35, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.IcosahedronGeometry(1.5, 64);
+        const material = new THREE.ShaderMaterial({
+            uniforms: { time: { value: 0 } },
+            vertexShader: `
+                varying vec3 vNormal;
+                uniform float time;
+                void main() {
+                    vNormal = normal;
+                    vec3 p = position;
+                    p.x += sin(p.y * 3.0 + time) * 0.08;
+                    p.y += cos(p.x * 2.5 + time) * 0.08;
+                    p.z += sin(p.x * 2.0 + time * 0.7) * 0.06;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec3 vNormal;
+                void main() {
+                    float iris = dot(vNormal, vec3(0.0, 0.0, 1.0));
+                    float edge = pow(1.0 - abs(iris), 4.0);
+                    vec3 base = vec3(0.05, 0.05, 0.06);
+                    vec3 rim = vec3(0.55, 0.55, 0.6);
+                    vec3 color = mix(base, rim, edge);
+                    gl_FragColor = vec4(color, 0.85);
+                }
+            `,
+            transparent: true,
+            wireframe: false
+        });
+
+        const wireMaterial = new THREE.ShaderMaterial({
+            uniforms: { time: { value: 0 } },
+            vertexShader: `
+                uniform float time;
+                void main() {
+                    vec3 p = position;
+                    p.x += sin(p.y * 3.0 + time) * 0.08;
+                    p.y += cos(p.x * 2.5 + time) * 0.08;
+                    p.z += sin(p.x * 2.0 + time * 0.7) * 0.06;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+                }
+            `,
+            fragmentShader: `
+                void main() {
+                    gl_FragColor = vec4(0.18, 0.18, 0.2, 0.4);
+                }
+            `,
+            transparent: true,
+            wireframe: true
+        });
+
+        const mesh = new THREE.Mesh(geometry, material);
+        const wireMesh = new THREE.Mesh(geometry, wireMaterial);
+        scene.add(mesh);
+        scene.add(wireMesh);
+
+        let mouseX = 0, mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
+            mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            material.uniforms.time.value += 0.008;
+            wireMaterial.uniforms.time.value += 0.008;
+            mesh.rotation.y += 0.003;
+            mesh.rotation.x += (mouseY - mesh.rotation.x) * 0.02;
+            mesh.rotation.y += (mouseX - mesh.rotation.y) * 0.02;
+            wireMesh.rotation.copy(mesh.rotation);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = (window.innerWidth * 0.35) / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth * 0.35, window.innerHeight);
+        });
+    </script>
+
+</body>
+</html>
